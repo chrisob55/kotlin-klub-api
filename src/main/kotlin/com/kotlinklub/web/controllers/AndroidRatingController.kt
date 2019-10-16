@@ -1,16 +1,13 @@
 package com.kotlinklub.web.controllers
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.util.JSONPObject
-import com.kotlinklub.core.domain.PlayStoreResponse
 import com.kotlinklub.core.services.AndroidRatingService
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
+import com.kotlinklub.web.utils.ResponseEntityHelper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
@@ -20,21 +17,12 @@ class AndroidRatingController {
     @Autowired
     lateinit var ratingService: AndroidRatingService
 
+    @Autowired
+    lateinit var responseEntityHelper: ResponseEntityHelper
+
     @RequestMapping(method = [RequestMethod.GET], value = "")
     fun findAll(): ResponseEntity<*> {
-
-        val doc = Jsoup.connect("https://play.google.com/store/apps/details?id=uk.gov.hmrc.ptcalc").timeout(10000).get()
-        val scripts = doc.select("script")
-
-        val result = scripts.first {it.attr("type").contentEquals("application/ld+json")}
-
-        val mapper = ObjectMapper()
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-
-        val rating = mapper.readValue(result.data(), PlayStoreResponse::class.java)
-
-        return ResponseEntity.ok().body<Any>(rating)
-
+        return responseEntityHelper.okResponseEntity(ratingService.findAll(), "ratings")
     }
 
     @RequestMapping(method = [RequestMethod.GET], value = "/{id}")

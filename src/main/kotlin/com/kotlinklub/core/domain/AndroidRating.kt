@@ -15,5 +15,5 @@ data class AndroidRating (
         var date: Date,
 
         @Column(nullable = false)
-        var rating: Int
+        var rating: Double
 )

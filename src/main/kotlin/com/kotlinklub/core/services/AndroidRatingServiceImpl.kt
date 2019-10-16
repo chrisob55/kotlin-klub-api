@@ -12,7 +12,7 @@ class AndroidRatingServiceImpl: AndroidRatingService {
     @Autowired
     lateinit var androidRatingRepository: AndroidRatingRepository
 
-    override fun create(date: Date, rating: Int): AndroidRating {
+    override fun create(date: Date, rating: Double): AndroidRating {
         val androidRating = AndroidRating(date = date, rating = rating)
         androidRatingRepository.save(androidRating)
         return androidRating
