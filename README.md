@@ -6,7 +6,7 @@ Requires [MySQL](https://www.mysql.com) v5.7.
 Install MySQL and add to your path
 
 ```sh
-$ brew services start mysql@5.7
+$ brew install mysql@5.7
 $ echo 'export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"' >> ~/.zshrc
 ```
 
